@@ -14,6 +14,7 @@ int two_sum_sorted(const int* nums, int n, int target, int* out_i, int* out_j) {
         if (nums[left] + nums[right] == target) {
             *out_i = left;
             *out_j = right;
+            return 1;
         } else if (nums[left] + nums[right] > target) {
             right--;
         } else if (nums[left] + nums[right] < target) {
