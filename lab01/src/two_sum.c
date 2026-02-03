@@ -11,8 +11,8 @@ int two_sum(const int* nums, int n, int target, int* out_i, int* out_j) {
     for (int i=0;i<length;i++) {
         for (int j=i+1;j<length;i++) {
             if (nums[i] + nums[j] == target) {
-                out_i = i;
-                out_j = j;
+                *out_i = i;
+                *out_j = j;
                 return 1;
             }
         }
