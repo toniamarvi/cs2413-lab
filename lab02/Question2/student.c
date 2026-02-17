@@ -40,56 +40,70 @@
 #include <stdbool.h>  // bool
 
 MyCircularQueue* myCircularQueueCreate(int k) {
-    // TODO:
-    // - Allocate MyCircularQueue
-    // - Allocate the internal buffer `data` of length k
-    // - Initialize capacity, head, tail, size
+    if (k <= 0) return NULL;
 
+    MyCircularQueue* q = (MyCircularQueue*)malloc(sizeof(MyCircularQueue));
+
+    q->data = (int*)malloc((size_t)k * sizeof(int));
+
+    q->capacity = k;
+    q->head = 0;
+    q->tail = 0;
+    q->size = 0;
+
+    return q;
 }
 
 bool myCircularQueueEnQueue(MyCircularQueue* obj, int value) {
-    // TODO:
-    // - If full, return false
-    // - Write value at tail, advance tail (wrap), size++
+    if (obj == NULL) return false;
+    if (obj->size == obj->capacity) return false;  // full
 
+    obj->data[obj->tail] = value;
+    obj->tail = (obj->tail + 1) % obj->capacity;
+    obj->size++;
+
+    return true;
 }
 
 bool myCircularQueueDeQueue(MyCircularQueue* obj) {
-    // TODO:
-    // - If empty, return false
-    // - Advance head (wrap), size--
+    if (obj == NULL) return false;
+    if (obj->size == 0) return false;  // empty
 
+    obj->head = (obj->head + 1) % obj->capacity;
+    obj->size--;
+
+    return true;
 }
 
 int myCircularQueueFront(MyCircularQueue* obj) {
-    // TODO:
-    // - Return -1 if empty
-    // - Otherwise return data[head]
+    if (obj == NULL) return -1;
+    if (obj->size == 0) return -1;
 
+    return obj->data[obj->head];
 }
 
 int myCircularQueueRear(MyCircularQueue* obj) {
-    // TODO:
-    // - Return -1 if empty
-    // - Otherwise return the last inserted element
-    //   (tail points to next insertion position)
+    if (obj == NULL) return -1;
+    if (obj->size == 0) return -1;
 
+    // tail points to next insertion position
+    // so last element is at tail - 1 (wrapped)
+    int lastIndex = (obj->tail - 1 + obj->capacity) % obj->capacity;
+    return obj->data[lastIndex];
 }
 
 bool myCircularQueueIsEmpty(MyCircularQueue* obj) {
-    // TODO:
-    // - Return true if size == 0
-
+    if (obj == NULL) return true;   // reasonable default
+    return obj->size == 0;
 }
 
 bool myCircularQueueIsFull(MyCircularQueue* obj) {
-    // TODO:
-    // - Return true if size == capacity
- 
+    if (obj == NULL) return false;
+    return obj->size == obj->capacity;
 }
 
 void myCircularQueueFree(MyCircularQueue* obj) {
-    // TODO:
-    // - Free internal buffer then free obj
-  
+    if (obj == NULL) return;
+    free(obj->data);
+    free(obj);
 }
